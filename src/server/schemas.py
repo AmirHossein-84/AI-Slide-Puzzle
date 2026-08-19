@@ -21,7 +21,7 @@ class SolveRequest(BaseModel):
     """Payload for requesting puzzle solution."""
     board: Optional[List[int]] = Field(None, description="Optional custom 43-slot board state")
     solver: str = Field("Hierarchical Subgoal Solver", description="Solver engine name")
-    time_limit: float = Field(15.0, ge=0.1, le=120.0, description="Time limit in seconds")
+    time_limit: float = Field(60.0, ge=0.1, le=120.0, description="Time limit in seconds")
 
 
 class BenchmarkRequest(BaseModel):

@@ -8,6 +8,7 @@ interface Board43Props {
   showNumbers: boolean;
   useProcedural: boolean;
   disabled?: boolean;
+  playbackSpeed?: number;
 }
 
 export const Board43: React.FC<Board43Props> = ({
@@ -16,8 +17,17 @@ export const Board43: React.FC<Board43Props> = ({
   showNumbers,
   useProcedural,
   disabled = false,
+  playbackSpeed = 8,
 }) => {
   const [blankR, blankC] = state.blank_pos;
+
+  // Dynamic CSS transition duration based on playback speed (0ms above 50 moves/sec)
+  const transitionClass =
+    playbackSpeed > 50
+      ? 'transition-none'
+      : playbackSpeed > 20
+      ? 'transition-all duration-30 ease-out'
+      : 'transition-all duration-150 ease-out';
 
   const handleTileClick = (r: number, c: number) => {
     if (disabled) return;
@@ -94,7 +104,7 @@ export const Board43: React.FC<Board43Props> = ({
 
             {/* Bottom-Left Poking Out Parking Pocket (7, 0) */}
             <div
-              className={`relative aspect-square w-full rounded-lg flex items-center justify-center transition-all ${
+              className={`relative aspect-square w-full rounded-lg flex items-center justify-center ${transitionClass} ${
                 isPocketBlank
                   ? 'bg-[#147a36] shadow-[inset_0_4px_8px_rgba(0,0,0,0.7)] border-2 border-[#0d5926]'
                   : 'cursor-pointer select-none bg-slate-800 border border-slate-700 shadow-md hover:brightness-110 active:scale-95'
@@ -155,7 +165,7 @@ export const Board43: React.FC<Board43Props> = ({
                   return (
                     <div
                       key={`slot-${r}-${c}`}
-                      className={`relative aspect-square rounded-lg flex items-center justify-center transition-all ${
+                      className={`relative aspect-square rounded-lg flex items-center justify-center ${transitionClass} ${
                         isBlank
                           ? 'bg-[#0f4d22] shadow-[inset_0_3px_6px_rgba(0,0,0,0.8)] border border-[#0d401c]'
                           : 'cursor-pointer select-none bg-slate-800 border border-slate-700 shadow-md hover:brightness-110 active:scale-95'

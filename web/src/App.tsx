@@ -274,6 +274,7 @@ export const App: React.FC = () => {
             showNumbers={showNumbers}
             useProcedural={useProcedural}
             disabled={isSolving}
+            playbackSpeed={playbackSpeed}
           />
         </div>
 

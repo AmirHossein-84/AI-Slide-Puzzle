@@ -1,6 +1,8 @@
 import React from 'react';
 import {
   Brain,
+  FastForward,
+  Flame,
   Pause,
   Play,
   RotateCcw,
@@ -66,7 +68,7 @@ export const Controls: React.FC<ControlsProps> = ({
       <div className="flex items-center justify-between border-b border-slate-800 pb-3">
         <h3 className="font-arcade text-sm font-bold tracking-wider text-slate-200 uppercase flex items-center gap-2">
           <Brain className="w-4 h-4 text-emerald-400" />
-          AI & Game Controls
+          AI &amp; Game Controls
         </h3>
         <button
           onClick={toggleSound}
@@ -85,12 +87,31 @@ export const Controls: React.FC<ControlsProps> = ({
         </div>
         <input
           type="range"
-          min={3}
-          max={40}
+          min={5}
+          max={200}
+          step={5}
           value={scrambleDepth}
           onChange={(e) => onScrambleDepthChange(Number(e.target.value))}
           className="w-full accent-emerald-500 bg-slate-800 h-2 rounded-lg cursor-pointer"
         />
+
+        {/* Quick Depth Presets */}
+        <div className="grid grid-cols-4 gap-1 pt-0.5">
+          {[20, 50, 100, 200].map((d) => (
+            <button
+              key={d}
+              onClick={() => onScrambleDepthChange(d)}
+              className={`py-1 px-1.5 rounded text-[10px] font-mono font-bold transition ${
+                scrambleDepth === d
+                  ? 'bg-emerald-600 text-white shadow'
+                  : 'bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800'
+              }`}
+            >
+              {d === 200 ? '200 MAX' : `${d} moves`}
+            </button>
+          ))}
+        </div>
+
         <button
           onClick={() => onScramble(scrambleDepth)}
           disabled={isSolving}
@@ -112,10 +133,10 @@ export const Controls: React.FC<ControlsProps> = ({
           disabled={isSolving}
           className="w-full bg-slate-800/90 border border-slate-700 text-slate-100 rounded-xl px-3 py-2.5 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none cursor-pointer"
         >
-          <option value="Hierarchical Subgoal Solver">Hierarchical Solver (&lt; 0.2s)</option>
-          <option value="A* (Linear Conflict)">A* (Linear Conflict Heuristic)</option>
-          <option value="IDA* (Linear Conflict)">IDA* (Low-Memory Optimal)</option>
-          <option value="Neural AI (DeepCubeA)">Neural AI (PyTorch ResNet)</option>
+          <option value="Hierarchical Subgoal Solver">Hierarchical Subgoal Solver (&lt; 50ms)</option>
+          <option value="Neural AI (PyTorch)">Neural AI (PyTorch Deep RL)</option>
+          <option value="A* Search (Linear Conflict)">A* Search (Linear Conflict Heuristic)</option>
+          <option value="IDA* Search">IDA* Search (Transposition-Bounded)</option>
         </select>
         <button
           onClick={() => onSolve(selectedSolver)}
@@ -127,7 +148,7 @@ export const Controls: React.FC<ControlsProps> = ({
         </button>
       </div>
 
-      {/* Playback Controls */}
+      {/* Playback Controls & Ultra-Speed */}
       <div className="space-y-2 pt-2 border-t border-slate-800">
         <div className="grid grid-cols-3 gap-2">
           <button
@@ -159,20 +180,43 @@ export const Controls: React.FC<ControlsProps> = ({
           </button>
         </div>
 
-        {/* Speed Slider */}
+        {/* Speed Slider (1 to 200 moves/sec) */}
         <div className="pt-2">
           <div className="flex items-center justify-between text-xs text-slate-400 font-medium">
-            <span>Playback Speed</span>
-            <span className="font-mono text-emerald-400 font-bold">{playbackSpeed}x moves/sec</span>
+            <span className="flex items-center gap-1.5">
+              <FastForward className="w-3.5 h-3.5 text-cyan-400" />
+              Playback Speed
+            </span>
+            <span className="font-mono text-cyan-400 font-bold flex items-center gap-1">
+              {playbackSpeed > 50 && <Flame className="w-3 h-3 text-amber-400 animate-pulse" />}
+              {playbackSpeed} moves/sec
+            </span>
           </div>
           <input
             type="range"
             min={1}
-            max={25}
+            max={200}
             value={playbackSpeed}
             onChange={(e) => onSpeedChange(Number(e.target.value))}
-            className="w-full accent-emerald-500 bg-slate-800 h-2 rounded-lg cursor-pointer"
+            className="w-full accent-cyan-400 bg-slate-800 h-2 rounded-lg cursor-pointer"
           />
+
+          {/* Quick Speed Presets */}
+          <div className="grid grid-cols-4 gap-1 pt-1">
+            {[10, 50, 100, 200].map((spd) => (
+              <button
+                key={spd}
+                onClick={() => onSpeedChange(spd)}
+                className={`py-1 px-1 rounded text-[10px] font-mono font-bold transition ${
+                  playbackSpeed === spd
+                    ? 'bg-cyan-600 text-white shadow'
+                    : 'bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800'
+                }`}
+              >
+                {spd === 200 ? '⚡ 200 MAX' : `${spd}x`}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

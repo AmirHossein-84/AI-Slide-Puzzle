@@ -347,7 +347,7 @@ async def ws_solve_stream(websocket: WebSocket) -> None:
             else:
                 solver_inst = solvers.get(solver_name, solvers["Hierarchical Subgoal Solver"])
 
-            result = solver_inst.solve(state, time_limit=30.0)
+            result = solver_inst.solve(state, time_limit=60.0)
 
             if not result.success:
                 await websocket.send_text(
