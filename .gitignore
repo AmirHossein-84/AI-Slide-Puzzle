@@ -25,5 +25,6 @@ Thumbs.db
 .idea/
 
 # Sliced Assets Cache (can be regenerated)
-assets/tiles/*.png
+assets/raw/digimon_clean_board.jpg
+assets/raw/image reference game.jpg
 !assets/tiles/.gitkeep
