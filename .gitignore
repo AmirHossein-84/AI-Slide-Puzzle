@@ -1,0 +1,29 @@
+# Virtual Environment
+.venv/
+env/
+venv/
+ENV/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Model Checkpoints & Large Weights
+models/*.pt
+models/*.pth
+models/*.onnx
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Sliced Assets Cache (can be regenerated)
+assets/tiles/*.png
+!assets/tiles/.gitkeep
